@@ -12,6 +12,13 @@ struct HeartRateView: View {
     @Environment(RingSessionManager.self) private var ringSessionManager
     @State var isStreamingHR: Bool = false
     
+    private var heartRateText: String {
+        if let latest = ringSessionManager.latestHeartRate {
+            return "\(latest)"
+        }
+        return "--"
+    }
+    
     var body: some View {
         ScrollView {
             VStack {
@@ -23,7 +30,7 @@ struct HeartRateView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     HStack(alignment: .lastTextBaseline) {
-                        Text("--")
+                        Text(heartRateText)
                             .font(.largeTitle)
                             .fontWeight(.semibold)
                             .contentTransition(.numericText())
@@ -39,9 +46,9 @@ struct HeartRateView: View {
                     Button(action: {
                         isStreamingHR.toggle()
                         if isStreamingHR {
-                            ringSessionManager.stopRealTimeStreaming(type: .heartRate)
-                        } else {
                             ringSessionManager.startRealTimeStreaming(type: .heartRate)
+                        } else {
+                            ringSessionManager.stopRealTimeStreaming(type: .heartRate)
                         }
                         
                     }, label: {
@@ -89,4 +96,3 @@ struct HeartRateView: View {
 #Preview {
     ContentView(ringSessionManager: PreviewRingSessionManager())
 }
-

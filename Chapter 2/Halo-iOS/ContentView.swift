@@ -113,7 +113,7 @@ struct ContentView: View {
                 HStack(spacing: 5) {
                     if let batteryInfo {
                         BatteryView(isCharging: batteryInfo.charging, batteryLevel: batteryInfo.batteryLevel)
-                        Text(batteryInfo.batteryLevel, format: .percent)
+                        Text("\(batteryInfo.batteryLevel)%")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }

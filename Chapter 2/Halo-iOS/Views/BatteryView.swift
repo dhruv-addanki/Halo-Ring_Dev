@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct BatteryView : View {
-    @State var isCharging: Bool = false
-    var batteryLevel : Int
+struct BatteryView: View {
+    var isCharging: Bool = false
+    var batteryLevel: Int
     
     var color : Color {
         switch batteryLevel {
