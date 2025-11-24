@@ -13,8 +13,10 @@ import SwiftUI
 struct TimelineEvent: Identifiable, Hashable {
     enum Kind: Hashable {
         case heartRate
+        case spo2
         case battery
         case connection
+        case raw
     }
     
     let id = UUID()
@@ -46,11 +48,31 @@ extension TimelineEvent {
         )
     }
     
+    static func spo2(value: Int) -> TimelineEvent {
+        TimelineEvent(
+            timestamp: Date(),
+            kind: .spo2,
+            metadata: [
+                "spo2": "\(value)"
+            ]
+        )
+    }
+    
     static func connection(state: String) -> TimelineEvent {
         TimelineEvent(
             timestamp: Date(),
             kind: .connection,
             metadata: ["state": state]
+        )
+    }
+    
+    static func raw(packet: [UInt8]) -> TimelineEvent {
+        TimelineEvent(
+            timestamp: Date(),
+            kind: .raw,
+            metadata: [
+                "packet": packet.map { String(format: "%02X", $0) }.joined(separator: " ")
+            ]
         )
     }
 }
@@ -62,7 +84,9 @@ class RingSessionManager: NSObject {
     var peripheralReady = false
     var pickerDismissed = true
     var latestHeartRate: Int?
+    var latestSpO2: Int?
     var events: [TimelineEvent] = []
+    var rawLoggingEnabled = false
     
     var currentRing: ASAccessory?
     private var session = ASAccessorySession()
@@ -92,6 +116,7 @@ class RingSessionManager: NSObject {
     private static let CMD_BATTERY: UInt8 = 3
     var batteryStatusCallback: ((BatteryInfo) -> Void)?
     private var scanInProgress = false
+    private let rawLogLimit = 200
     
     private static let ring: ASPickerDisplayItem = {
         let descriptor = ASDiscoveryDescriptor()
@@ -327,6 +352,11 @@ extension RingSessionManager: CBPeripheralDelegate {
         }
         
         let packet = [UInt8](value)
+        
+        if rawLoggingEnabled {
+            recordEvent(.raw(packet: packet))
+            trimRawLogIfNeeded()
+        }
         guard let command = packet.first else {
             print("Received empty packet")
             return
@@ -354,6 +384,11 @@ extension RingSessionManager: CBPeripheralDelegate {
                     DispatchQueue.main.async {
                         self.latestHeartRate = readingValue
                         self.recordEvent(.heartRate(bpm: readingValue))
+                    }
+                } else if readingType == .spo2 {
+                    DispatchQueue.main.async {
+                        self.latestSpO2 = readingValue
+                        self.recordEvent(.spo2(value: readingValue))
                     }
                 }
             } else {
@@ -451,5 +486,10 @@ extension RingSessionManager {
 extension RingSessionManager {
     fileprivate func recordEvent(_ event: TimelineEvent) {
         events.append(event)
+    }
+    
+    fileprivate func trimRawLogIfNeeded() {
+        guard events.count > rawLogLimit else { return }
+        events.removeFirst(events.count - rawLogLimit)
     }
 }

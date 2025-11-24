@@ -9,6 +9,7 @@ import Foundation
 
 enum RealTimeReading: UInt8 {
     case heartRate = 1
+    case spo2 = 2
 }
 
 enum Action: UInt8 {

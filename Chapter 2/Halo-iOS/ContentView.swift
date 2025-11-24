@@ -12,6 +12,7 @@ import AccessorySetupKit
 enum NavigationPath: String, CaseIterable, Identifiable {
     case heartRate = "Heart Rate"
     case spo2 = "SPO2"
+    case timeline = "Timeline"
     
     var id: String { self.rawValue }
     
@@ -21,6 +22,8 @@ enum NavigationPath: String, CaseIterable, Identifiable {
             return "heart.fill"
         case .spo2:
             return "drop.circle.fill"
+        case .timeline:
+            return "clock.arrow.circlepath"
         }
     }
     
@@ -30,6 +33,8 @@ enum NavigationPath: String, CaseIterable, Identifiable {
             return .pink
         case .spo2:
             return .blue
+        case .timeline:
+            return .teal
         }
     }
 }
@@ -59,13 +64,23 @@ struct ContentView: View {
                 })
                 
                 Section("Metrics", content: {
-                    ForEach(NavigationPath.allCases) { navPath in
+                    ForEach(NavigationPath.allCases.filter { $0 != .timeline }) { navPath in
                         NavigationLink(value: navPath) {
                             HStack {
                                 Image(systemName: navPath.icon)
                                     .foregroundStyle(navPath.tintColor)
                                 Text(navPath.rawValue)
                             }
+                        }
+                    }
+                })
+                
+                Section("Timeline", content: {
+                    NavigationLink(value: NavigationPath.timeline) {
+                        HStack {
+                            Image(systemName: NavigationPath.timeline.icon)
+                                .foregroundStyle(NavigationPath.timeline.tintColor)
+                            Text(NavigationPath.timeline.rawValue)
                         }
                     }
                 })
@@ -80,6 +95,17 @@ struct ContentView: View {
                     })
                 }
                 
+                Section("Debug", content: {
+                    Button {
+                        ringSessionManager.rawLoggingEnabled.toggle()
+                    } label: {
+                        HStack {
+                            Image(systemName: "antenna.radiowaves.left.and.right")
+                                .foregroundStyle(ringSessionManager.rawLoggingEnabled ? .green : .secondary)
+                            Text(ringSessionManager.rawLoggingEnabled ? "Raw logging: On" : "Raw logging: Off")
+                        }
+                    }
+                })
                 
             }.listStyle(.insetGrouped)
         } detail: {
@@ -131,6 +157,10 @@ struct ContentView: View {
                 .environment(ringSessionManager)
         case .spo2:
             SPO2View()
+                .environment(ringSessionManager)
+        case .timeline:
+            TimelineView()
+                .environment(ringSessionManager)
         }
     }
 }

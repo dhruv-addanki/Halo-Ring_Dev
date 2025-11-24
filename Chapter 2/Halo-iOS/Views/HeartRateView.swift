@@ -19,6 +19,10 @@ struct HeartRateView: View {
         return "--"
     }
     
+    private var statusText: String {
+        ringSessionManager.peripheralReady ? "Ready" : "Connecting..."
+    }
+    
     var body: some View {
         ScrollView {
             VStack {
@@ -43,6 +47,10 @@ struct HeartRateView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical)
                     
+                    Text(statusText)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                
                     Button(action: {
                         isStreamingHR.toggle()
                         if isStreamingHR {
