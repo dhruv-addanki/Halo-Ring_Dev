@@ -267,6 +267,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Halo-iOS/Preview Content\"";
+				DEVELOPMENT_TEAM = BG6H6LJBZK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Halo-iOS/Info.plist";
@@ -280,7 +281,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "cyrilzakka.Halo-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "Halo-Ring";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -296,6 +297,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Halo-iOS/Preview Content\"";
+				DEVELOPMENT_TEAM = BG6H6LJBZK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Halo-iOS/Info.plist";
@@ -309,7 +311,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "cyrilzakka.Halo-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "Halo-Ring";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

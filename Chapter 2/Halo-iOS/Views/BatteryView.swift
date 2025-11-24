@@ -61,14 +61,14 @@ struct BatteryView: View {
     }
 }
 
-#Preview {
-    VStack(spacing: 20) {
-        BatteryView(isCharging: true, batteryLevel: 10)  // Red
-        BatteryView(isCharging: true, batteryLevel: 50)  // Yellow
-        BatteryView(isCharging: true, batteryLevel: 80)  // Green
-        BatteryView(isCharging: true, batteryLevel: 100)  // Green
-        BatteryView(isCharging: false, batteryLevel: 10)  // Red
-        BatteryView(isCharging: false, batteryLevel: 50)  // Yellow
-        BatteryView(isCharging: false, batteryLevel: 100)  // Green
-    }
-}
+//#Preview {
+//    VStack(spacing: 20) {
+//        BatteryView(isCharging: true, batteryLevel: 10)  // Red
+//        BatteryView(isCharging: true, batteryLevel: 50)  // Yellow
+//        BatteryView(isCharging: true, batteryLevel: 80)  // Green
+//        BatteryView(isCharging: true, batteryLevel: 100)  // Green
+//        BatteryView(isCharging: false, batteryLevel: 10)  // Red
+//        BatteryView(isCharging: false, batteryLevel: 50)  // Yellow
+//        BatteryView(isCharging: false, batteryLevel: 100)  // Green
+//    }
+//}
